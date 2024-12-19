@@ -15,6 +15,7 @@ class Conference
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
@@ -24,15 +25,16 @@ class Conference
     #[ORM\Column]
     private ?bool $isInternational = null;
 
-    /**
-     * @var Collection<int, Comment>
-     */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'conference', orphanRemoval: true)]
-    private Collection $comments;
-
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "conference", orphanRemoval: true)]
+    private $comments;
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->city . ' ' . $this->year;
     }
 
     public function getId(): ?int
@@ -69,13 +71,12 @@ class Conference
         return $this->isInternational;
     }
 
-    public function setInternational(bool $isInternational): static
+    public function setIsInternational(bool $isInternational): static
     {
         $this->isInternational = $isInternational;
 
         return $this;
     }
-
     /**
      * @return Collection<int, Comment>
      */
@@ -84,19 +85,20 @@ class Conference
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): static
+    public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
+            $this->comments[] = $comment;
             $comment->setConference($this);
         }
 
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
+    public function removeComment(Comment $comment): self
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
             // set the owning side to null (unless already changed)
             if ($comment->getConference() === $this) {
                 $comment->setConference(null);
