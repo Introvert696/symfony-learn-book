@@ -37,28 +37,22 @@ class ConferenceController extends AbstractController
         #[Autowire('%photo_dir%')] string $photoDir
     ): Response {
         $comment = new Comment();
-
         $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setConference($conference);
-            dd($comment);
             if ($photo = $form['photo']->getData()) {
-                $filename = bin2hex(random_bytes(6) . '.' . $photo->quessExtension());
+                $filename = bin2hex(random_bytes(6) . '.' . $photo->guessExtension());
                 $photo->move($photoDir, $filename);
                 $comment->setPhotoFilename($filename);
             }
-
-            dd($comment);
-
-
 
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('conference', ['slug' => $conference->getSlug()]);
         }
-
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $commentRepository->getCommentPaginator($conference, $offset);
 
