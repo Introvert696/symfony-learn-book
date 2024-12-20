@@ -43,13 +43,15 @@
 				Next
 			</a>
 		{% endif %}
-
+			
 
 	{% else %}
 		<div>
 			No comments have been posted yet for this conference
 		</div>
 	{% endif %}
+	<h2>Add youre feedback</h2>
+			{{ form(comment_form) }}
 
 
 {% endblock %}
