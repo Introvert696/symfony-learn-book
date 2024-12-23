@@ -1,5 +1,7 @@
 {% extends "base.html.twig" %}
-
+{% block title %}
+	{{conference}}
+{% endblock %}
 
 {% block body %}
 	<h2>
@@ -43,18 +45,18 @@
 				Next
 			</a>
 		{% endif %}
-			
+
 
 	{% else %}
 		<div>
 			No comments have been posted yet for this conference
 		</div>
 	{% endif %}
-	<h2>Add youre feedback</h2>
-			{{ form(comment_form) }}
-			{# {{ form_errors(comment_form) }} #}
+	<h2>
+		Add youre feedback
+	</h2>
+	{{ form(comment_form) }}
+		{# {{ form_errors(comment_form) }} #}
 
-			
 
-
-{% endblock %}
+	{% endblock %}
