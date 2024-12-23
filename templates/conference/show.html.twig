@@ -16,7 +16,7 @@
 		{% for comment in comments %}
 			{% if comment.photofilename %}
 				<img
-					src="{{ asset('uploads/photo/' ~ comment.photofilename) }}" style="max-width: 200px"/>
+					src="{{ asset('uploads/photos/' ~ comment.photofilename) }}" style="max-width: 200px"/>
 			{% endif %}
 
 			<h4>
